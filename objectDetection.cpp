@@ -76,7 +76,9 @@ int main( int argc, const char** argv )
 
 ///updatable variables
 
-int initial_x_detected;
+///int initial_x_detected;
+std::vector<Rect> initial_x_detected;
+
 
 bool is_initial_detected = false;
 int secondary_x_detected;
@@ -131,7 +133,7 @@ void corresponding_program(int third_x, int framewidth)
 	}
 	else
 	{
-		system("terminal");
+		system("gnome-terminal");
 	}
 }
 
@@ -144,10 +146,15 @@ void third_object_shift_correctly(int second_y, int third_y, int frameheight, in
 		corresponding_program( third_x, framewidth);
 	}
 }
+///function usage
+int initial_looper(int the_counter)
+{
+	return(initial_x_detected[the_counter].x);
+}
 
 
 
-int counter = 0;
+int counter = 1;
 
 /** @function detectAndDisplay */
 void detectAndDisplay( Mat frame )
@@ -159,7 +166,7 @@ void detectAndDisplay( Mat frame )
     //-- Detect
     std::vector<Rect> gests;
     face_cascade.detectMultiScale( frame_gray, gests, 1.1, 0, 0, Size(30,30), Size(300,300) );
-    if(counter == 30)
+    if(counter == 25)
     {
 	counter = 0;
     }
@@ -171,13 +178,18 @@ void detectAndDisplay( Mat frame )
 
 	if(gests[i].x < .33 *frame_gray.size().width || gests[i].x > .66 *frame_gray.size().width)
 	{
-	rectangle ( frame, gests[i], Scalar( 255, 0, 0 ), 5, 8, 0);
-	
+	/*rectangle ( frame, gests[i], Scalar( 255, 0, 0 ), 5, 8, 0);
+	*/
 	cout << gests[i].x << "   ,    " << gests[i].y << endl;
 	cout << gests[i].size() << "-------------" << endl;
-
+	
 	if(counter == 1){	
 
+	rectangle ( frame, gests[i], Scalar( 255, 0, 0 ), 5, 8, 0);
+	/*
+	cout << gests[i].x << "   ,    " << gests[i].y << endl;
+	cout << gests[i].size() << "-------------" << endl;
+	*/
 	if(horizontal_shift)
 	{
 		tertiary_x_detected = gests[i].x;
@@ -189,14 +201,14 @@ void detectAndDisplay( Mat frame )
 	{
 		secondary_x_detected = gests[i].x;
 		secondary_y_detected = gests[i].y;	
-		second_object_shift_correctly(initial_x_detected, secondary_x_detected, frame.size().width );
+		second_object_shift_correctly( initial_looper(i), secondary_x_detected, frame.size().width );
 	}
 
 
 	///this is the last possible thing
-	if(i>0)
+	if(i==1)
 	{
-	initial_x_detected = gests[i].x;
+	initial_x_detected = gests;
 	is_initial_detected = true;
 	}
 
@@ -205,6 +217,6 @@ void detectAndDisplay( Mat frame )
     }
 
     //-- Show what you got
-    imshow( "Capture - Face detection", frame_gray );
+    imshow( "Capture - Face detection", frame );
 }
 

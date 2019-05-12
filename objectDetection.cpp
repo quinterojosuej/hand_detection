@@ -91,14 +91,6 @@ int tertiary_y_detected;
 ///function usage
 void second_object_shift_correctly(int first_x, int second_x, int frame_size)
 {
-	 /*
-	if ( check for which side here )
-		then check here for the correct shift
-			if correct shift then update horizontal shift
-	else
-		then check here for the correct shift
-			if correct shift then update horizontal shift
-	*/
 
 	if(first_x >= frame_size*.66)
     {
@@ -154,7 +146,7 @@ int initial_looper(int the_counter)
 
 
 
-int counter = 1;
+int counter = 0;
 
 /** @function detectAndDisplay */
 void detectAndDisplay( Mat frame )
@@ -169,6 +161,8 @@ void detectAndDisplay( Mat frame )
     if(counter == 25)
     {
 	counter = 0;
+	horizontal_shift = false;
+	is_initial_detected = false;
     }
     counter++;
 
@@ -178,18 +172,12 @@ void detectAndDisplay( Mat frame )
 
 	if(gests[i].x < .33 *frame_gray.size().width || gests[i].x > .66 *frame_gray.size().width)
 	{
-	/*rectangle ( frame, gests[i], Scalar( 255, 0, 0 ), 5, 8, 0);
-	*/
 	cout << gests[i].x << "   ,    " << gests[i].y << endl;
 	cout << gests[i].size() << "-------------" << endl;
 	
 	if(counter == 1){	
-
 	rectangle ( frame, gests[i], Scalar( 255, 0, 0 ), 5, 8, 0);
-	/*
-	cout << gests[i].x << "   ,    " << gests[i].y << endl;
-	cout << gests[i].size() << "-------------" << endl;
-	*/
+
 	if(horizontal_shift)
 	{
 		tertiary_x_detected = gests[i].x;
@@ -200,18 +188,28 @@ void detectAndDisplay( Mat frame )
 	if(is_initial_detected)
 	{
 		secondary_x_detected = gests[i].x;
-		secondary_y_detected = gests[i].y;	
-		second_object_shift_correctly( initial_looper(i), secondary_x_detected, frame.size().width );
+		secondary_y_detected = gests[i].y;
+		for( int x = 0; x < initial_x_detected.size(); x++)
+		{
+			if(horizontal_shift)
+			{
+				x = initial_x_detected.size();
+			}
+			else
+			{
+				second_object_shift_correctly( initial_looper(x), secondary_x_detected, frame.size().width );
+			}
+		}
 	}
 
 
 	///this is the last possible thing
-	if(i==1)
+	if(i==0)
 	{
 	initial_x_detected = gests;
 	is_initial_detected = true;
 	}
-
+	
 	}
     }
     }

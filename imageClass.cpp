@@ -1,0 +1,73 @@
+#include "imageClass.hpp"
+// This function comprises all of the logic required for the 
+// corresponding functions to activate.
+
+ImageClass::ImageClass()
+{
+	// Initializes variables accordingly
+	is_initial_detected = false;
+	horizontal_shift = false;
+	secondary_x_detected = 0;
+	secondary_y_detected = 0;
+
+	tertiary_x_detected = 0;
+	tertiary_y_detected = 0;
+}
+void ImageClass::second_object_shift_correctly(int first_x, int second_x, int frame_size)
+{
+	// Determines whether there was an hand-object horizontal shift
+	if(first_x >= frame_size*.66)
+    {
+        if(second_x > first_x)
+        {
+            horizontal_shift = true;
+        }
+        else
+        {
+            horizontal_shift = false;
+        }
+    }
+    if(first_x <= frame_size*.33)
+    {
+        if(second_x < first_x)
+        {
+            horizontal_shift = true;
+        }
+        else
+        {
+            horizontal_shift = false;
+        }
+    }
+}
+
+void ImageClass::corresponding_program( int third_x , int frame_size)
+{
+	// for the left it is firefox 
+	if( third_x < frame_size *.5 )
+	{
+		system("firefox");
+		cout << "FIREFOX"<< endl;
+	}
+	// for the right it is terminal
+	else
+	{
+		system("gnome-terminal");
+		cout << "TERMINAL" << endl;
+	}
+}
+
+void ImageClass::third_object_shift_correctly(int second_y, int third_y, int frameheight, int framewidth, int third_x)
+{
+	// If there was a vertical shift then activate 
+	// the corresponding program
+	if(third_y > second_y + frameheight * .1)
+	{
+		corresponding_program( third_x, framewidth);
+	}
+}
+
+int ImageClass::initial_looper(int the_counter)
+{
+	// Returns the data of the vector
+	return (initial_x_detected[the_counter].x);
+}

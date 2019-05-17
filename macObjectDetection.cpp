@@ -205,6 +205,7 @@ void detectAndDisplay( Mat frame )
 		tertiary_x_detected = gests[i].x;
 		tertiary_y_detected = gests[i].y;
 		third_object_shift_correctly( secondary_y_detected , tertiary_y_detected, frame.size().height, frame.size().width, tertiary_x_detected );
+		i = gests.size();
 	}
 	//If there was an initial objects than have the new detections
 	//be compared with the initial detections. If so then horizontal_shift = true
@@ -219,6 +220,7 @@ void detectAndDisplay( Mat frame )
 			if(horizontal_shift)
 			{
 				x = initial_x_detected.size();
+				i = gests.size();
 			}
 			else
 			{

@@ -5,13 +5,11 @@
 ImageClass::ImageClass()
 {
 	// Initializes variables accordingly
-	is_initial_detected = false;
-	horizontal_shift = false;
-	secondary_x_detected = 0;
-	secondary_y_detected = 0;
+	vals.secondary_x_detected = 0;
+	vals.secondary_y_detected = 0;
 
-	tertiary_x_detected = 0;
-	tertiary_y_detected = 0;
+	vals.tertiary_x_detected = 0;
+	vals.tertiary_y_detected = 0;
 }
 void ImageClass::second_object_shift_correctly(int first_x, int second_x, int frame_size)
 {
@@ -20,22 +18,22 @@ void ImageClass::second_object_shift_correctly(int first_x, int second_x, int fr
     {
         if(second_x > first_x)
         {
-            horizontal_shift = true;
+            vals.horizontal_shift = true;
         }
         else
         {
-            horizontal_shift = false;
+            vals.horizontal_shift = false;
         }
     }
     if(first_x <= frame_size*.33)
     {
         if(second_x < first_x)
         {
-            horizontal_shift = true;
+            vals.horizontal_shift = true;
         }
         else
         {
-            horizontal_shift = false;
+            vals.horizontal_shift = false;
         }
     }
 }
@@ -69,5 +67,5 @@ void ImageClass::third_object_shift_correctly(int second_y, int third_y, int fra
 int ImageClass::initial_looper(int the_counter)
 {
 	// Returns the data of the vector
-	return (initial_x_detected[the_counter].x);
+	return (vect.initial_x_detected[the_counter].x);
 }

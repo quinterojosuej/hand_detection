@@ -120,31 +120,31 @@ void detectAndDisplay( Mat frame )
 	//If there is a confirmed horizontal_shift then a new objects are 
 	//tried to see if a confirmed third_object_shift_correctly
 	//occurs
-	if(funcVar.horizontal_shift)
+	if(funcVar.vals.horizontal_shift)
 	{
-		funcVar.tertiary_x_detected = gests[i].x;
-		funcVar.tertiary_y_detected = gests[i].y;
-		funcVar.third_object_shift_correctly( funcVar.secondary_y_detected , funcVar.tertiary_y_detected, frame.size().height, frame.size().width, funcVar.tertiary_x_detected );
+		funcVar.vals.tertiary_x_detected = gests[i].x;
+		funcVar.vals.tertiary_y_detected = gests[i].y;
+		funcVar.third_object_shift_correctly( funcVar.vals.secondary_y_detected , funcVar.vals.tertiary_y_detected, frame.size().height, frame.size().width, funcVar.vals.tertiary_x_detected );
 		i = gests.size();
 	}
 	//If there was an initial objects than have the new detections
 	//be compared with the initial detections. If so then horizontal_shift = true
 	//making it so that the loop stops. Maintains the values for those that made 
 	//the horizontal_shift = true. Else keeps it as false.
-	if(funcVar.is_initial_detected)
+	if(funcVar.vals.is_initial_detected)
 	{
-		funcVar.secondary_x_detected = gests[i].x;
-		funcVar.secondary_y_detected = gests[i].y;
-		for( int x = 0; x < funcVar.initial_x_detected.size(); x++)
+		funcVar.vals.secondary_x_detected = gests[i].x;
+		funcVar.vals.secondary_y_detected = gests[i].y;
+		for( int x = 0; x < funcVar.vect.initial_x_detected.size(); x++)
 		{
-			if(funcVar.horizontal_shift)
+			if(funcVar.vals.horizontal_shift)
 			{
-				x = funcVar.initial_x_detected.size();
+				x = funcVar.vect.initial_x_detected.size();
 				i = gests.size();
 			}
 			else
 			{
-				funcVar.second_object_shift_correctly( funcVar.initial_looper(x), funcVar.secondary_x_detected, frame.size().width );
+				funcVar.second_object_shift_correctly( funcVar.initial_looper(x), funcVar.vals.secondary_x_detected, frame.size().width );
 			}
 		}
 		cout << "FOUND SECOND HAND!";
@@ -155,8 +155,8 @@ void detectAndDisplay( Mat frame )
 	//in the horizontal shift 
 	if(i==0)
 	{
-	funcVar.initial_x_detected = gests;
-	funcVar.is_initial_detected = true;
+	funcVar.vect.initial_x_detected = gests;
+	funcVar.vals.is_initial_detected = true;
 	cout << "FOUND HAND!" << endl;
 	}
 	

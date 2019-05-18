@@ -17,6 +17,7 @@ class VectorClass
 {
         public:
                 VectorClass();
+		void Show();
                 std::vector<Rect> initial_x_detected;
 
 };
